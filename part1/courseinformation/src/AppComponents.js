@@ -1,22 +1,14 @@
 export const Header = (props) => {
-  return (
-    <div>
-      <h1>{props.course}</h1>
-    </div>
-  );
+  return <h1>{props.course}</h1>;
 };
 
 export const Content = ({ parts }) => {
   return (
-    <div>
-      {parts.map((part) => {
-        return (
-          <div key={part.name}>
-            <Part part={part} />
-          </div>
-        );
-      })}
-    </div>
+    <>
+      <Part part={parts[0]} />
+      <Part part={parts[1]} />
+      <Part part={parts[2]} />
+    </>
   );
 };
 
@@ -34,9 +26,5 @@ export const Total = ({ parts }) => {
     total += part.exercises;
   });
 
-  return (
-    <div>
-      <p>Number of exercises {total}</p>
-    </div>
-  );
+  return <p>Number of exercises {total}</p>;
 };
