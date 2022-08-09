@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-//TODO: 1.13*: anecdotes step2
+//TODO: 1.14*: anecdotes step2
 
 //
 const App = () => {
@@ -15,6 +15,16 @@ const App = () => {
   ];
 
   const [selected, setSelected] = useState(0);
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
+
+  const vote = (selected) => {
+    // copy 0 upto 'selected' elements,
+    // change the selected element,
+    // copy from 'selected + 1' element till the end of array and return a new update array
+    setVotes((items) => {
+      return [...items.slice(0, selected), items[selected] + 1, ...items.slice(selected + 1)];
+    });
+  };
 
   const randomAnecdote = () => {
     const maxNum = anecdotes.length;
@@ -23,10 +33,16 @@ const App = () => {
     setSelected(randomNum);
   };
 
+  console.log(selected);
+  console.table(votes);
+
   return (
     <div>
       {anecdotes[selected]}
       <br />
+      has {votes[selected]} votes
+      <br />
+      <button onClick={() => vote(selected)}> vote </button>
       <button onClick={() => randomAnecdote()}> next anecdote </button>
     </div>
   );
