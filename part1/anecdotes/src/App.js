@@ -17,7 +17,7 @@ const App = () => {
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
 
-  const vote = (selected) => {
+  const vote = () => {
     // copy 0 upto 'selected' elements,
     // insert changed element in the selected index
     // copy from 'selected + 1' element till the end of array and return a new update array
@@ -42,7 +42,7 @@ const App = () => {
       <br />
       has {votes[selected]} votes
       <br />
-      <button onClick={() => vote(selected)}> vote </button>
+      <button onClick={() => vote()}> vote </button>
       <button onClick={() => getRandomAnecdote()}> next anecdote </button>
     </div>
   );
