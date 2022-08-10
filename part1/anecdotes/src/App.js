@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-//TODO: 1.14*: anecdotes step2
-
 //
 const App = () => {
   const anecdotes = [
@@ -33,17 +31,23 @@ const App = () => {
     setSelected(randomNum);
   };
 
-  console.log(selected);
-  console.table(votes);
+  const highestVoteValue = Math.max.apply(null, votes);
+  const indexOfHighestVote = votes.indexOf(highestVoteValue);
 
   return (
     <div>
+      <h1> Anecdote of the day </h1>
       {anecdotes[selected]}
       <br />
       has {votes[selected]} votes
       <br />
       <button onClick={() => vote()}> vote </button>
       <button onClick={() => getRandomAnecdote()}> next anecdote </button>
+
+      <h1> Anecdote with most votes </h1>
+      {anecdotes[indexOfHighestVote]}
+      <br />
+      has {highestVoteValue} votes
     </div>
   );
 };
