@@ -1,5 +1,33 @@
 import { useState } from "react";
 
+const PopularAnecdote = ({ votes, anecdotes, title }) => {
+  const highestVoteValue = Math.max(...votes);
+  const indexOfHighestVote = votes.indexOf(highestVoteValue);
+
+  return (
+    <>
+      <h1> {title} </h1>
+      {anecdotes[indexOfHighestVote]}
+      <br />
+      has {highestVoteValue} votes
+    </>
+  );
+};
+
+const Anecdotes = ({ anecdotes, votes, selected, title }) => {
+  return (
+    <>
+      <h1> {title} </h1>
+      {anecdotes[selected]} <br />
+      has {votes[selected]}
+    </>
+  );
+};
+
+const Button = ({ handleChange, text }) => {
+  return <button onClick={handleChange}> {text} </button>;
+};
+
 //
 const App = () => {
   const anecdotes = [
@@ -20,7 +48,11 @@ const App = () => {
     // insert changed element in the selected index
     // copy from 'selected + 1' element till the end of array and return a new update array
     setVotes((items) => {
-      return [...items.slice(0, selected), items[selected] + 1, ...items.slice(selected + 1)];
+      return [
+        ...items.slice(0, selected),
+        items[selected] + 1,
+        ...items.slice(selected + 1),
+      ];
     });
   };
 
@@ -31,23 +63,23 @@ const App = () => {
     setSelected(randomNum);
   };
 
-  const highestVoteValue = Math.max.apply(null, votes);
-  const indexOfHighestVote = votes.indexOf(highestVoteValue);
-
   return (
     <div>
-      <h1> Anecdote of the day </h1>
-      {anecdotes[selected]}
+      <Anecdotes
+        title="Anecdote of the day"
+        anecdotes={anecdotes}
+        votes={votes}
+        selected={selected}
+      />
       <br />
-      has {votes[selected]} votes
+      <Button handleChange={vote} text="vote" />
+      <Button handleChange={getRandomAnecdote} text="next anecdote" />
       <br />
-      <button onClick={() => vote()}> vote </button>
-      <button onClick={() => getRandomAnecdote()}> next anecdote </button>
-
-      <h1> Anecdote with most votes </h1>
-      {anecdotes[indexOfHighestVote]}
-      <br />
-      has {highestVoteValue} votes
+      <PopularAnecdote
+        title="Anecdote with most votes"
+        votes={votes}
+        anecdotes={anecdotes}
+      />
     </div>
   );
 };
