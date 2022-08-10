@@ -26,7 +26,7 @@ const App = () => {
     });
   };
 
-  const randomAnecdote = () => {
+  const getRandomAnecdote = () => {
     const maxNum = anecdotes.length;
     const randomNum = Math.floor(Math.random() * maxNum);
 
@@ -43,7 +43,7 @@ const App = () => {
       has {votes[selected]} votes
       <br />
       <button onClick={() => vote(selected)}> vote </button>
-      <button onClick={() => randomAnecdote()}> next anecdote </button>
+      <button onClick={() => getRandomAnecdote()}> next anecdote </button>
     </div>
   );
 };
