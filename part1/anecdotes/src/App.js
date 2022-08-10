@@ -19,7 +19,7 @@ const App = () => {
 
   const vote = (selected) => {
     // copy 0 upto 'selected' elements,
-    // change the selected element,
+    // insert changed element in the selected index
     // copy from 'selected + 1' element till the end of array and return a new update array
     setVotes((items) => {
       return [...items.slice(0, selected), items[selected] + 1, ...items.slice(selected + 1)];
