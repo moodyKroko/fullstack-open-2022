@@ -18,10 +18,20 @@ function App() {
         exercises: 14,
         id: 3,
       },
+      {
+        name: "Redux",
+        exercises: 11,
+        id: 4,
+      },
     ],
   };
 
-  return <Course course={course} />;
+  return (
+    <>
+      <Course course={course} />
+      <Total parts={course.parts} />
+    </>
+  );
 }
 
 const Course = ({ course }) => {
@@ -63,4 +73,9 @@ const Part = ({ name, exercises }) => {
   );
 };
 
+const Total = ({ parts }) => {
+  const total = parts.reduce((sum, part) => sum + part.exercises, 0);
+
+  return <h4>total of {total} exercises</h4>;
+};
 export default App;
