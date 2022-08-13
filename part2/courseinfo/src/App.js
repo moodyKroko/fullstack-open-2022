@@ -1,4 +1,4 @@
-import Course from "./Course";
+import Course from "./components/Course";
 
 function App() {
   const courses = [
