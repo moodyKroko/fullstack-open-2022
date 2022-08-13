@@ -1,5 +1,7 @@
+import Course from "./Course";
+
 function App() {
-  const course = [
+  const courses = [
     {
       name: "Half Stack application development",
       id: 1,
@@ -44,57 +46,11 @@ function App() {
     },
   ];
 
-
   return (
     <>
-      <Course course={course} />
-      <Total parts={course.parts} />
+      <Course courses={courses} />
     </>
   );
 }
 
-const Course = ({ course }) => {
-  return (
-    <>
-      <Header title={course.name} />
-      <Content parts={course.parts} />
-    </>
-  );
-};
-
-const Header = ({ title }) => {
-  return (
-    <>
-      <h1> {title} </h1>
-    </>
-  );
-};
-
-const Content = ({ parts }) => {
-  return (
-    <>
-      {parts.map((part) => {
-        return (
-          <Part key={part.id} name={part.name} exercises={part.exercises} />
-        );
-      })}
-    </>
-  );
-};
-
-const Part = ({ name, exercises }) => {
-  return (
-    <>
-      <p>
-        {name} {exercises}
-      </p>
-    </>
-  );
-};
-
-const Total = ({ parts }) => {
-  const total = parts.reduce((sum, part) => sum + part.exercises, 0);
-
-  return <h4>total of {total} exercises</h4>;
-};
 export default App;
