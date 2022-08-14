@@ -1,15 +1,23 @@
 import { useState } from 'react'
 
+// TODO: 2.6 phonebook step3
+
 const App = () => {
   const [persons, setPersons] = useState([{ name: 'Arto Hellas' }])
   const [newName, setNewName] = useState('')
 
   const addName = (event) => {
     event.preventDefault()
-    const newPersonObject = persons.concat([{ name: newName }])
 
-    setPersons(newPersonObject)
-    setNewName('')
+    if (persons.map((person) => person.name).includes(newName)) {
+      alert(`${newName} is already added to phonebook`)
+    } else {
+      const newPersonObject = { name: newName }
+
+      setPersons(persons.concat(newPersonObject))
+      setNewName('')
+    }
+
   }
 
   const handleNameChange = (event) => {
