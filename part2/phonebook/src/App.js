@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import Filter from './components/Filter'
+import Persons from './components/Persons'
+import PersonsForm from './components/PersonsForm'
 
 // TODO: 2.10 phonebook step5
 
@@ -54,12 +57,14 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Filter />
       <div>
         filter shown with
         <input type='search' value={searchName} onChange={handleNameSearch} />
       </div>
 
       <h2>add a new</h2>
+      <PersonsForm />
       <form onSubmit={addPerson}>
         <div>
           name:
@@ -86,6 +91,7 @@ const App = () => {
       <div>debug: {phoneNumber} </div>
 
       <h2>Numbers</h2>
+      <Persons />
       {personsToShow.map((person) => (
         <div key={person.id}>
           {person.name} {person.number}
