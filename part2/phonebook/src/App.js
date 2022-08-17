@@ -3,18 +3,11 @@ import Filter from './components/Filter'
 import Persons from './components/Persons'
 import PersonsForm from './components/PersonsForm'
 
-// TODO: 2.10 phonebook step5
-
-const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 },
-  ])
+const App = (props) => {
+  const [persons, setPersons] = useState(props.persons)
   const [phoneNumber, setPhoneNumber] = useState('')
   const [newName, setNewName] = useState('')
-  const [findName, setFindName] = useState('')
+  const [name, setName] = useState('')
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -35,59 +28,33 @@ const App = () => {
   }
 
   const handleNameChange = (event) => {
-    console.log(event.target.value)
     setNewName(event.target.value)
   }
 
   const handleNumberChange = (event) => {
-    console.log(event.target.value)
     setPhoneNumber(event.target.value)
   }
 
   const handleNameSearch = (event) => {
-    console.log(event.target.value)
-
-    setFindName(event.target.value)
+    setName(event.target.value)
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter />
-      <div>
-        filter shown with
-        <input type='search' value={findName} onChange={handleNameSearch} />
-      </div>
+      <Filter searchName={name} onNameSearch={handleNameSearch} />
 
-      <h2>add a new</h2>
-      <PersonsForm />
-      <form onSubmit={addPerson}>
-        <div>
-          name:
-          <input type='text' value={newName} onChange={handleNameChange} />
-        </div>
+      <h3>add a new</h3>
+      <PersonsForm
+        submit={addPerson}
+        name={newName}
+        phoneNumber={phoneNumber}
+        onNameChange={handleNameChange}
+        onNumberChange={handleNumberChange}
+      />
 
-        <div>
-          number:
-          <input
-            type='tel'
-            name='phone'
-            placeholder='39-44-5323523'
-            value={phoneNumber}
-            onChange={handleNumberChange}
-          />
-        </div>
-        <div>
-          <button type='submit'>add</button>
-        </div>
-      </form>
-
-      <br />
-      <div>debug: {newName} </div>
-      <div>debug: {phoneNumber} </div>
-
-      <h2>Numbers</h2>
-      <Persons persons={persons} searchPerson={findName} />
+      <h3>Numbers</h3>
+      <Persons persons={persons} searchPerson={name} />
     </div>
   )
 }
