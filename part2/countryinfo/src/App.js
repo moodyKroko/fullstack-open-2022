@@ -20,12 +20,20 @@ function App() {
     setFilter(event.target.value)
   }
 
+  const handleButtonClick = (event) => {
+    setFilter(event.target.attributes.country.value)
+  }
+
   return (
     <div>
       find countries
       <Filter filter={filter} handleChange={handleNameChange} />
       <br />
-      <Countries countries={countries} filterName={filter} />
+      <Countries
+        countries={countries}
+        filterName={filter}
+        onButtonClick={handleButtonClick}
+      />
     </div>
   )
 }
