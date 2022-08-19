@@ -1,13 +1,22 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import Filter from './components/Filter'
-import Persons from './components/Persons'
 import PersonsForm from './components/PersonsForm'
+import Phonebook from './components/Phonebook'
 
-const App = (props) => {
-  const [persons, setPersons] = useState(props.persons)
+const URL = 'http://localhost:3001'
+
+const App = () => {
+  const [persons, setPersons] = useState([])
   const [phoneNumber, setPhoneNumber] = useState('')
   const [newName, setNewName] = useState('')
-  const [name, setName] = useState('')
+  const [filter, setFilter] = useState('')
+
+  useEffect(() => {
+    axios.get(`${URL}/persons`).then((response) => {
+      setPersons(response.data)
+    })
+  }, [])
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -36,13 +45,13 @@ const App = (props) => {
   }
 
   const handleNameSearch = (event) => {
-    setName(event.target.value)
+    setFilter(event.target.value)
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter searchName={name} onNameSearch={handleNameSearch} />
+      <Filter filter={filter} onSearch={handleNameSearch} />
 
       <h3>add a new</h3>
       <PersonsForm
@@ -54,7 +63,7 @@ const App = (props) => {
       />
 
       <h3>Numbers</h3>
-      <Persons persons={persons} searchPerson={name} />
+      <Phonebook personList={persons} filter={filter} />
     </div>
   )
 }

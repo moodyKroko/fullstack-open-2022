@@ -1,8 +1,8 @@
-const Filter = ({ searchName, onNameSearch }) => {
+const Filter = ({ filter, onSearch }) => {
   return (
     <>
       filter shown with
-      <input type='search' value={searchName} onChange={onNameSearch} />
+      <input type='search' value={filter} onChange={onSearch} />
     </>
   )
 }
