@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import Countries from './components/Countries'
 import Filter from './components/Filter'
+import Weather from './components/Weather'
 
 const URL = 'https://restcountries.com/v2'
 
@@ -34,6 +35,7 @@ function App() {
         filterName={filter}
         onButtonClick={handleButtonClick}
       />
+
     </div>
   )
 }

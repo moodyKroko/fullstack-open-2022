@@ -1,3 +1,5 @@
+import Weather from "./Weather"
+
 const CountryViews = ({ country }) => {
   return (
     <div>
@@ -16,6 +18,7 @@ const CountryViews = ({ country }) => {
         alt='flag'
         style={{ width: '150px', height: '100px' }}
       />
+      <Weather city={country.capital}/>
     </div>
   )
 }
