@@ -14,7 +14,7 @@ const CountryViews = ({ country }) => {
       <img
         src={country.flag}
         alt='flag'
-        style={{ width: '200px', height: '200px' }}
+        style={{ width: '150px', height: '100px' }}
       />
     </div>
   )
