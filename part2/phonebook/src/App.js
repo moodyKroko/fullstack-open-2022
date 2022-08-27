@@ -48,6 +48,28 @@ const App = () => {
     setFilter(event.target.value)
   }
 
+  const handleDelete = (id) => {
+    const person = persons.filter((person) => person.id === id)
+
+    if (window.confirm(`delete ${person[0].name} ?`)) {
+      phoneService
+        .deletePerson(id)
+        .then((returnedStatus) => {
+          console.log(returnedStatus)
+          setPersons(persons.filter((person) => person.id !== id))
+        })
+        .catch((error) => {
+          alert(`cannot find person with id ${id}`)
+        })
+    }
+  }
+
+  const filteredList = filter.includes()
+    ? persons
+    : persons.filter((person) =>
+        person.name.toLowerCase().includes(filter.toLowerCase())
+      )
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -67,8 +89,8 @@ const App = () => {
 
       <h3>Numbers</h3>
       <Phonebook
-        personList={persons}
-        filter={filter}
+        list={filteredList}
+        onDelete={handleDelete}
       />
     </div>
   )

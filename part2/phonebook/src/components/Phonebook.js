@@ -1,13 +1,10 @@
-const Phonebook = ({ personList, filter }) => {
-  const persons = personList.filter((person) =>
-    person.name.toLowerCase().includes(filter.toLowerCase())
-  )
-
+const Phonebook = ({ list, onDelete }) => {
   return (
     <>
-      {persons.map((person) => (
+      {list.map((person) => (
         <div key={person.id}>
-          {person.name} {person.number}
+          {person.name} {person.number}{' '}
+          <button onClick={() => onDelete(person.id)}>delete</button>
         </div>
       ))}
     </>
