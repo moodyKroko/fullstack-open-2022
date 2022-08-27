@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter'
 import PersonsForm from './components/PersonsForm'
 import Phonebook from './components/Phonebook'
-
-const URL = 'http://localhost:3001'
+import phoneService from './services/phoneService'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -13,8 +11,8 @@ const App = () => {
   const [filter, setFilter] = useState('')
 
   useEffect(() => {
-    axios.get(`${URL}/persons`).then((response) => {
-      setPersons(response.data)
+    phoneService.getAll().then((initialData) => {
+      setPersons(initialData)
     })
   }, [])
 
@@ -30,9 +28,11 @@ const App = () => {
         id: persons.length + 1,
       }
 
-      setPersons(persons.concat(newPersonObject))
-      setNewName('')
-      setPhoneNumber('')
+      phoneService.addPerson(newPersonObject).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson))
+        setNewName('')
+        setPhoneNumber('')
+      })
     }
   }
 
@@ -51,7 +51,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter filter={filter} onSearch={handleNameSearch} />
+      <Filter
+        filter={filter}
+        onSearch={handleNameSearch}
+      />
 
       <h3>add a new</h3>
       <PersonsForm
@@ -63,7 +66,10 @@ const App = () => {
       />
 
       <h3>Numbers</h3>
-      <Phonebook personList={persons} filter={filter} />
+      <Phonebook
+        personList={persons}
+        filter={filter}
+      />
     </div>
   )
 }
