@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonsForm from './components/PersonsForm'
 import Phonebook from './components/Phonebook'
-import phoneService from './services/phoneService'
+import PhoneService from './services/phoneService'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,7 +11,7 @@ const App = () => {
   const [filter, setFilter] = useState('')
 
   useEffect(() => {
-    phoneService.getAll().then((initialData) => {
+    PhoneService.getAll().then((initialData) => {
       setPersons(initialData)
     })
   }, [])
@@ -19,8 +19,26 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
 
-    if (persons.map((person) => person.name).includes(newName)) {
-      alert(`${newName} is already added to phonebook`)
+    const existingPerson = persons
+      .map((person) => person.name)
+      .includes(newName)
+    const message = `${newName} is already added to phonebook, replace the old number with a new one?`
+
+    if (existingPerson) {
+      if (window.confirm(message)) {
+        const found = persons.find((person) => person.name === newName)
+        const changedPerson = { ...found, number: phoneNumber }
+
+        PhoneService.updateNumber(found.id, changedPerson).then(
+          (returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== found.id ? person : returnedPerson
+              )
+            )
+          }
+        )
+      }
     } else {
       const newPersonObject = {
         name: newName,
@@ -28,7 +46,7 @@ const App = () => {
         id: persons.length + 1,
       }
 
-      phoneService.addPerson(newPersonObject).then((returnedPerson) => {
+      PhoneService.addPerson(newPersonObject).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson))
         setNewName('')
         setPhoneNumber('')
@@ -49,11 +67,10 @@ const App = () => {
   }
 
   const handleDelete = (id) => {
-    const person = persons.filter((person) => person.id === id)
+    const person = persons.find((person) => person.id === id)
 
-    if (window.confirm(`delete ${person[0].name} ?`)) {
-      phoneService
-        .deletePerson(id)
+    if (window.confirm(`delete ${person.name} ?`)) {
+      PhoneService.deletePerson(id)
         .then((returnedStatus) => {
           console.log(returnedStatus)
           setPersons(persons.filter((person) => person.id !== id))
