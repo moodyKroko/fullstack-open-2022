@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react'
-import Filter from './components/Filter'
-import Notification from './components/Notification'
-import PersonsForm from './components/PersonsForm'
-import Phonebook from './components/Phonebook'
+import { Filter, Notification, PersonsForm, Phonebook } from './components'
 import PhoneService from './services/phoneService'
 
 const App = () => {
