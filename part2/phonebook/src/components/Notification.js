@@ -1,14 +1,16 @@
-const Notification = ({ message, messageType }) => {
-  if (message === null) {
+const Notification = ({ notifications }) => {
+  if (notifications === null) {
     return null
   }
 
+  const { message, type } = notifications
+
   const getNotificationType = () => {
-    if (messageType === 'error') {
+    if (type === 'error') {
       return 'error'
     }
 
-    if (messageType === 'success') {
+    if (type === 'success') {
       return 'success'
     }
 

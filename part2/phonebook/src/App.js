@@ -11,7 +11,6 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [filter, setFilter] = useState('')
   const [notification, setNotification] = useState(null)
-  const [messageType, setMessageType] = useState()
 
   useEffect(() => {
     PhoneService.getAll().then((initialData) => {
@@ -29,6 +28,7 @@ const App = () => {
 
     if (existingPerson) {
       if (window.confirm(message)) {
+        // update existing person
         const found = persons.find((person) => person.name === newName)
         const changedPerson = { ...found, number: phoneNumber }
 
@@ -41,19 +41,20 @@ const App = () => {
             )
           })
           .catch((error) => {
-            setNotification(
-              `Information of ${newName} has already been removed from server`
-            )
-            setMessageType('error')
+            setNotification({
+              message: `Information of ${newName} has already been removed from server`,
+              type: 'error',
+            })
 
             setTimeout(() => {
               setNotification(null)
-              setMessageType(null)
             }, 5000)
             setPersons(persons.filter((person) => person.id !== found.id))
+            // returns an array & stops showing the removed person in the list
           })
       }
     } else {
+      // create new person
       const newPersonObject = {
         name: newName,
         number: phoneNumber,
@@ -63,17 +64,49 @@ const App = () => {
       PhoneService.addPerson(newPersonObject).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson))
 
-        setNotification(`Added ${newName}`)
-        setMessageType('success')
+        setNotification({
+          message: `Added ${newName}`,
+          type: 'success',
+        })
 
         setTimeout(() => {
           setNotification(null)
-          setMessageType(null)
         }, 5000)
 
         setNewName('')
         setPhoneNumber('')
       })
+    }
+  }
+
+  const handleDelete = (id) => {
+    const person = persons.find((person) => person.id === id)
+
+    if (window.confirm(`delete ${person.name} ?`)) {
+      PhoneService.deletePerson(id)
+        .then((returnedStatus) => {
+          setNotification({
+            message: `${person.name} has been successfully deleted from server`,
+            type: 'success',
+          })
+
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
+
+          setPersons(persons.filter((person) => person.id !== id))
+        })
+        .catch((error) => {
+          setNotification({
+            message: `Information of ${person.name} has already been removed from server`,
+            type: 'error',
+          })
+
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
+          setPersons(persons.filter((person) => person.id !== id))
+        })
     }
   }
 
@@ -89,39 +122,6 @@ const App = () => {
     setFilter(event.target.value)
   }
 
-  const handleDelete = (id) => {
-    const person = persons.find((person) => person.id === id)
-
-    if (window.confirm(`delete ${person.name} ?`)) {
-      PhoneService.deletePerson(id)
-        .then((returnedStatus) => {
-          setNotification(
-            `${person.name} has been successfully deleted from server`
-          )
-          setMessageType('success')
-
-          setTimeout(() => {
-            setNotification(null)
-            setMessageType(null)
-          }, 5000)
-
-          setPersons(persons.filter((person) => person.id !== id))
-        })
-        .catch((error) => {
-          setNotification(
-            `Information of ${person.name} has already been removed from server`
-          )
-          setMessageType('error')
-
-          setTimeout(() => {
-            setNotification(null)
-            setMessageType(null)
-          }, 5000)
-          setPersons(persons.filter((person) => person.id !== id))
-        })
-    }
-  }
-
   const filteredList = filter.includes()
     ? persons
     : persons.filter((person) =>
@@ -131,10 +131,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification
-        message={notification}
-        messageType={messageType}
-      />
+      <Notification notifications={notification} />
       <Filter
         filter={filter}
         onSearch={handleNameSearch}
