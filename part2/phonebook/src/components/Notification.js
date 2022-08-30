@@ -5,19 +5,7 @@ const Notification = ({ notifications }) => {
 
   const { message, type } = notifications
 
-  const getNotificationType = () => {
-    if (type === 'error') {
-      return 'error'
-    }
-
-    if (type === 'success') {
-      return 'success'
-    }
-
-    return null
-  }
-
-  return <div className={getNotificationType()}>{message}</div>
+  return <div className={type === 'error' ? 'error' : 'success'}>{message}</div>
 }
 
 export default Notification
