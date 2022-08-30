@@ -13,8 +13,7 @@ const addPerson = (newPerson) => {
 }
 
 const deletePerson = (id) => {
-  const request = axios.delete(`${baseUrl}/${id}`)
-  return request.then((response) => response.status)
+  return axios.delete(`${baseUrl}/${id}`)
 }
 
 const updateNumber = (id, changedPerson) => {

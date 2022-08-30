@@ -15,65 +15,62 @@ const App = () => {
     })
   }, [])
 
+  const notify = (message, type) => {
+    setNotification({ message, type })
+
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
+  }
+
   const addPerson = (event) => {
     event.preventDefault()
 
-    const existingPerson = persons
-      .map((person) => person.name)
-      .includes(newName)
-    const message = `${newName} is already added to phonebook, replace the old number with a new one?`
+    const newPerson = {
+      name: newName,
+      number: phoneNumber,
+    }
+
+    setNewName('')
+    setPhoneNumber('')
+
+    const existingPerson = persons.find((person) => person.name === newPerson.name)
 
     if (existingPerson) {
+      const message = `${existingPerson.name} is already added to phonebook, replace the old number with a new one?`
+
       if (window.confirm(message)) {
         // update existing person
-        const found = persons.find((person) => person.name === newName)
-        const changedPerson = { ...found, number: phoneNumber }
+        const changedPerson = { ...existingPerson, number: phoneNumber }
 
-        PhoneService.updateNumber(found.id, changedPerson)
-          .then((returnedPerson) => {
+        PhoneService.updateNumber(existingPerson.id, changedPerson)
+          .then((savedPerson) => {
             setPersons(
               persons.map((person) =>
-                person.id !== found.id ? person : returnedPerson
+                person.id !== existingPerson.id ? person : savedPerson
               )
+            )
+            notify(
+              `Information of ${newName} has been updated successfully`,
+              'success'
             )
           })
           .catch((error) => {
-            setNotification({
-              message: `Information of ${newName} has already been removed from server`,
-              type: 'error',
-            })
-
-            setTimeout(() => {
-              setNotification(null)
-            }, 5000)
-            setPersons(persons.filter((person) => person.id !== found.id))
             // returns an array & stops showing the removed person in the list
+            setPersons(persons.filter((person) => person.id !== existingPerson.id))
+            notify(
+              `Information of ${newName} has already been removed from server`,
+              'error'
+            )
           })
+        return
       }
-    } else {
-      // create new person
-      const newPersonObject = {
-        name: newName,
-        number: phoneNumber,
-        id: persons.length + 1,
-      }
-
-      PhoneService.addPerson(newPersonObject).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson))
-
-        setNotification({
-          message: `Added ${newName}`,
-          type: 'success',
-        })
-
-        setTimeout(() => {
-          setNotification(null)
-        }, 5000)
-
-        setNewName('')
-        setPhoneNumber('')
-      })
     }
+
+    PhoneService.addPerson(newPerson).then((savedPerson) => {
+      setPersons(persons.concat(savedPerson))
+      notify(`Added ${newName}`, 'success')
+    })
   }
 
   const handleDelete = (id) => {
@@ -81,28 +78,19 @@ const App = () => {
 
     if (window.confirm(`delete ${person.name} ?`)) {
       PhoneService.deletePerson(id)
-        .then((returnedStatus) => {
-          setNotification({
-            message: `${person.name} has been successfully deleted from server`,
-            type: 'success',
-          })
-
-          setTimeout(() => {
-            setNotification(null)
-          }, 5000)
-
+        .then(() => {
           setPersons(persons.filter((person) => person.id !== id))
+          notify(
+            `${person.name} has been successfully deleted from server`,
+            'success'
+          )
         })
         .catch((error) => {
-          setNotification({
-            message: `Information of ${person.name} has already been removed from server`,
-            type: 'error',
-          })
-
-          setTimeout(() => {
-            setNotification(null)
-          }, 5000)
           setPersons(persons.filter((person) => person.id !== id))
+          notify(
+            `Information of ${person.name} has already been removed from server`,
+            'error'
+          )
         })
     }
   }
