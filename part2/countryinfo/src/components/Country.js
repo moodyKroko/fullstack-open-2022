@@ -1,26 +1,46 @@
-import Weather from "./Weather"
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import Weather from './Weather'
 
-const CountryViews = ({ country }) => {
+const Country = ({ country }) => {
+  const [weather, setWeather] = useState(null)
+
+  const { languages, capital, name, area, flag } = country
+
+  useEffect(() => {
+    const baseUrl = 'https://api.openweathermap.org/data/2.5'
+    const API_KEY = process.env.REACT_APP_API_KEY
+
+    axios
+      .get(`${baseUrl}/weather?q=${capital}&appid=${API_KEY}&units=metric`)
+      .then(({ data }) => {
+        console.log('weather data loaded')
+        setWeather(data)
+      })
+  }, [capital])
   return (
     <div>
-      <h1>{country.name} </h1>
-      capital {country.capital}
-      <br />
-      area {country.area}
-      <h3>languages:</h3>
+      <h2>{name} </h2>
+      <div>capital {capital}</div>
+      <div>area {area}</div>
+
+      <h4>languages:</h4>
       <ul>
-        {country.languages.map((language) => (
-          <li key={language.name}>{language.name}</li>
+        {languages.map(({ name }) => (
+          <li key={name}>{name}</li>
         ))}
       </ul>
       <img
-        src={country.flag}
-        alt='flag'
-        style={{ width: '150px', height: '100px' }}
+        src={flag}
+        alt={`Flag of ${name}`}
+        width={150}
       />
-      <Weather city={country.capital}/>
+      <Weather
+        city={capital}
+        weather={weather}
+      />
     </div>
   )
 }
 
-export default CountryViews
+export default Country

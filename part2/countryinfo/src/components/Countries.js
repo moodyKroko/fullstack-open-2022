@@ -9,13 +9,17 @@ const Countries = ({ countries, setFilter }) => {
     return <div>No matches, specify some other fliter</div>
   }
 
-  if (countries.length >= 1) {
-    return countries.map(({ name }) => (
-      <div key={name}>
-        {name}
-        <button onClick={() => setFilter(name)}>show</button>
+  if (countries.length > 1) {
+    return (
+      <div>
+        {countries.map(({ name }) => (
+          <div key={name}>
+            {name}
+            <button onClick={() => setFilter(name)}>show</button>
+          </div>
+        ))}
       </div>
-    ))
+    )
   }
 
   return <Country country={countries[0]} />
