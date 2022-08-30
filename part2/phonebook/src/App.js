@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Filter, Notification, PersonsForm, Phonebook } from './components'
+import { Notification, PersonsForm, Phonebook } from './components'
 import PhoneService from './services/phoneService'
 
 const App = () => {
@@ -129,11 +129,11 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Notification notifications={notification} />
-      <Filter
-        filter={filter}
-        onSearch={handleNameSearch}
+      filter shown with
+      <input
+        value={filter}
+        onChange={handleNameSearch}
       />
-
       <h3>add a new</h3>
       <PersonsForm
         submit={addPerson}
@@ -142,7 +142,6 @@ const App = () => {
         onNameChange={handleNameChange}
         onNumberChange={handleNumberChange}
       />
-
       <h3>Numbers</h3>
       <Phonebook
         list={filteredList}
