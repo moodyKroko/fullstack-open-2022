@@ -1,30 +1,24 @@
-import CountryViews from './CountryViews'
+import Country from './Country'
 
-const Countries = ({ countries, filterName, onButtonClick }) => {
-  const filterCountries = countries.filter((country) =>
-    country.name.toLowerCase().includes(filterName.toLowerCase())
-  )
-
-  if (filterCountries.length > 10) {
-    return <p>Too many matches, specify another filter</p>
+const Countries = ({ countries, setFilter }) => {
+  if (countries.length > 10) {
+    return <div>Too many countries, specify another filter</div>
   }
 
-  if (filterCountries.length === 1) {
-    return <CountryViews country={filterCountries[0]} />
+  if (countries.length === 0) {
+    return <div>No matches, specify some other fliter</div>
   }
 
-  const displayCountries = () => {
-    return filterCountries.map((country) => (
-      <div key={country.name}>
-        {country.name}
-        <button onClick={onButtonClick} country={country.name}>
-          show
-        </button>
+  if (countries.length >= 1) {
+    return countries.map(({ name }) => (
+      <div key={name}>
+        {name}
+        <button onClick={() => setFilter(name)}>show</button>
       </div>
     ))
   }
 
-  return <>{displayCountries()}</>
+  return <Country country={countries[0]} />
 }
 
 export default Countries

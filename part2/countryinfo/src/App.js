@@ -11,8 +11,8 @@ function App() {
 
   useEffect(() => {
     console.log('effect loaded')
-    axios.get(`${URL}/all`).then((response) => {
-      setCountries(response.data)
+    axios.get(`${URL}/all`).then(({ data }) => {
+      setCountries(data)
     })
   }, [])
 
@@ -20,19 +20,21 @@ function App() {
     setFilter(event.target.value)
   }
 
-  const handleButtonClick = (event) => {
-    setFilter(event.target.attributes.country.value)
-  }
+  const filteredCountries = countries.filter((country) =>
+    country.name.toLowerCase().includes(filter.toLowerCase())
+  )
 
   return (
     <div>
       find countries
-      <Filter filter={filter} handleChange={handleNameChange} />
+      <Filter
+        filter={filter}
+        handleChange={handleNameChange}
+      />
       <br />
       <Countries
-        countries={countries}
-        filterName={filter}
-        onButtonClick={handleButtonClick}
+        countries={filteredCountries}
+        setFilter={setFilter}
       />
     </div>
   )
