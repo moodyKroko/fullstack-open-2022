@@ -1,10 +1,11 @@
 const Weather = ({ city, weather }) => {
   if (weather === null) return null
 
-  const cityTemp = weather.main.temp
-  const iconCode = weather.weather[0].icon
-  const windSpeed = weather.wind.speed
-  const weatherDescription = weather.weather[0].description
+  const {
+    weather: [{ icon: iconCode, description: iconDescription }],
+    main: { temp: cityTemp },
+    wind: { speed: windSpeed },
+  } = weather
 
   const weatherIcon = `https://openweathermap.org/img/wn/${iconCode}@2x.png`
 
@@ -14,7 +15,7 @@ const Weather = ({ city, weather }) => {
       <div>temperature {cityTemp} Celcius</div>
       <img
         src={weatherIcon}
-        alt={`icon for ${weatherDescription}`}
+        alt={`icon for ${iconDescription}`}
       />
       <div>wind {windSpeed} m/s</div>
     </div>
