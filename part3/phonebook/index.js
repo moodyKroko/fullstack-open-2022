@@ -1,14 +1,18 @@
-const { application } = require('express')
 const express = require('express')
 const logger = require('morgan')
-const app = express()
 
+const app = express()
 const PORT = 3001
 
 app.use(express.json())
-app.use(logger('tiny'))
 
-app.listen(PORT)
+logger.token('person', (req, res) => {
+  return JSON.stringify(req.body)
+})
+
+app.use(
+  logger(':method :url :status :res[content-length] - :response-time ms :person')
+)
 
 let persons = [
   {
@@ -32,8 +36,6 @@ let persons = [
     number: '39-23-6423122',
   },
 ]
-
-logger.token('req', (request, response) => {})
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
@@ -101,3 +103,5 @@ app.delete('/api/persons/:id', (request, response) => {
 
   response.status(200).end()
 })
+
+app.listen(PORT)
