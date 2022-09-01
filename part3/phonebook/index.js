@@ -2,16 +2,7 @@ const express = require('express')
 const logger = require('morgan')
 
 const app = express()
-
-app.use(express.json())
-
-logger.token('person', (req, res) => {
-  return JSON.stringify(req.body)
-})
-
-app.use(
-  logger(':method :url :status :res[content-length] - :response-time ms :person')
-)
+const cors = require('cors')
 
 let persons = [
   {
@@ -35,6 +26,20 @@ let persons = [
     number: '39-23-6423122',
   },
 ]
+
+app.use(express.json())
+
+logger.token('person', (req, res) => {
+  return JSON.stringify(req.body)
+})
+
+app.use(
+  logger(':method :url :status :res[content-length] - :response-time ms :person')
+)
+
+app.use(cors())
+
+app.use(express.static('build'))
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
