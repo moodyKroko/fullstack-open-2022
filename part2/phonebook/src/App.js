@@ -67,10 +67,19 @@ const App = () => {
       }
     }
 
-    PhoneService.addPerson(newPerson).then((savedPerson) => {
-      setPersons(persons.concat(savedPerson))
-      notify(`Added ${newName}`, 'success')
-    })
+    PhoneService.addPerson(newPerson)
+      .then((savedPerson) => {
+        setPersons(persons.concat(savedPerson))
+        notify(`Added ${newName}`, 'success')
+      })
+      .catch((error) => {
+        const errorMessage = error.response.data.error
+        if (error.response.status === 400) {
+          notify(`${errorMessage}`, 'error')
+          return
+        }
+        notify(`${errorMessage}`, 'error')
+      })
   }
 
   const handleDelete = (id) => {
