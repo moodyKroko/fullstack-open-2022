@@ -1,0 +1,58 @@
+# get all person
+GET http://localhost:3001/api/persons
+
+###
+
+# get a person by id
+GET http://localhost:3001/api/persons/63161ffa417824b36a244b5d
+# GET http://localhost:3001/api/persons/63152754d4f5b8bbf20479a2
+# GET http://localhost:3001/api/persons/63161f07417824b36a244b57
+
+###
+# get a person by id thats not in the database
+GET http://localhost:3001/api/persons/1
+
+###
+
+# get total count of person saved in the database
+GET http://localhost:3001/info
+
+###
+
+# save a person in database
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Testing POST method",
+    "number":"39-23-6423122"
+}
+
+###
+# test for missing number in the submitted form
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Testing from vscode REST Client",
+    "number":""
+}
+
+###
+
+# test for missing name in the submitted form
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "",
+    "number":"015-45678994"
+}
+
+###
+# test delete method
+# make a get call to get every document
+# get an id from one of the document & put it after /
+# see status response if successfully deleted
+# make a get all call to confirm
+DELETE http://localhost:3001/api/persons/
