@@ -1,16 +1,19 @@
+@baseUrl = http://localhost:3001/api
+@testId = 6317c2d61608d26943a96b78
+
 # get all person
-GET http://localhost:3001/api/persons
+GET {{baseUrl}}/persons
 
 ###
 
 # get a person by id
-GET http://localhost:3001/api/persons/63161ffa417824b36a244b5d
-# GET http://localhost:3001/api/persons/63152754d4f5b8bbf20479a2
-# GET http://localhost:3001/api/persons/63161f07417824b36a244b57
+# GET {{baseUrl}}/persons/63161ffa417824b36a244b5d
+# GET {{baseUrl}}/persons/63152754d4f5b8bbf20479a2
+GET {{baseUrl}}/persons/{{testId}}
 
 ###
 # get a person by id thats not in the database
-GET http://localhost:3001/api/persons/1
+GET {{baseUrl}}/persons/1
 
 ###
 
@@ -20,17 +23,17 @@ GET http://localhost:3001/info
 ###
 
 # save a person in database
-POST http://localhost:3001/api/persons
+POST {{baseUrl}}/persons
 Content-Type: application/json
 
 {
-    "name": "Testing POST method",
-    "number":"39-23-6423122"
+    "name": "Testing put method",
+    "number":"01-54-7894542"
 }
 
 ###
 # test for missing number in the submitted form
-POST http://localhost:3001/api/persons
+POST {{baseUrl}}/persons
 Content-Type: application/json
 
 {
@@ -41,7 +44,7 @@ Content-Type: application/json
 ###
 
 # test for missing name in the submitted form
-POST http://localhost:3001/api/persons
+POST {{baseUrl}}/persons
 Content-Type: application/json
 
 {
@@ -51,8 +54,14 @@ Content-Type: application/json
 
 ###
 # test delete method
-# make a get call to get every document
-# get an id from one of the document & put it after /
-# see status response if successfully deleted
-# make a get all call to confirm
-DELETE http://localhost:3001/api/persons/
+DELETE {{baseUrl}}/persons/{{testId}}
+
+###
+# test put method
+PUT {{baseUrl}}/persons/{{testId}}
+Content-Type: application/json
+
+{
+    "name": "Testing put method",
+    "number": "00-00-000000"
+}
