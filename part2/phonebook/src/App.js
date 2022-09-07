@@ -56,12 +56,7 @@ const App = () => {
             )
           })
           .catch((error) => {
-            // returns an array & stops showing the removed person in the list
-            setPersons(persons.filter((person) => person.id !== existingPerson.id))
-            notify(
-              `Information of ${newName} has already been removed from server`,
-              'error'
-            )
+            notify(`${error.response.data.error}`, 'error')
           })
         return
       }
@@ -73,12 +68,7 @@ const App = () => {
         notify(`Added ${newName}`, 'success')
       })
       .catch((error) => {
-        const errorMessage = error.response.data.error
-        if (error.response.status === 400) {
-          notify(`${errorMessage}`, 'error')
-          return
-        }
-        notify(`${errorMessage}`, 'error')
+        notify(`${error.response.data.error}`, 'error')
       })
   }
 
@@ -95,11 +85,7 @@ const App = () => {
           )
         })
         .catch((error) => {
-          setPersons(persons.filter((person) => person.id !== id))
-          notify(
-            `Information of ${person.name} has already been removed from server`,
-            'error'
-          )
+          notify(`${error.response.data.error}`, 'error')
         })
     }
   }

@@ -18,7 +18,7 @@ const PersonsForm = ({
           <input
             type='tel'
             name='phone'
-            placeholder='39-44-5323523'
+            placeholder='040-5323523, 02-1234556'
             value={phoneNumber}
             onChange={onNumberChange}
           />

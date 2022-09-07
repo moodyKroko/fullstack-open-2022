@@ -5,7 +5,7 @@ console.log('connecting to database')
 
 mongoose
   .connect(url)
-  .then((result) => {
+  .then(() => {
     console.log('connected to MongoDB')
   })
   .catch((error) => {
@@ -13,8 +13,21 @@ mongoose
   })
 
 const personSchema = new mongoose.Schema({
-  name: String,
-  number: String,
+  name: {
+    type: String,
+    minlength: 3,
+    required: true,
+  },
+  number: {
+    type: String,
+    validate: {
+      validator: function (value) {
+        return /^\d{2,3}-\d+$/.test(value)
+      },
+    },
+    minlength: 8,
+    required: true,
+  },
 })
 
 personSchema.set('toJSON', {
